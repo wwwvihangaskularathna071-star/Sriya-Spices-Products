@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sriya Products - Authentic Sri Lankan Spices</title>
+    <meta name="description" content="Premium Sri Lankan spices and products from Sriya Products. Authentic taste, premium quality.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Notification Toast -->
+    <div id="toast" class="toast hidden">Operation successful!</div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container nav-container">
+            <div class="logo">
+                <a href="#home" onclick="router('home')">
+                    <span class="logo-text">Sriya Products</span>
+                    <span class="logo-sub">Est. 1999</span>
+                </a>
+            </div>
+            <div class="nav-links">
+                <a href="#home" onclick="router('home')" class="active">Home</a>
+                <a href="#products" onclick="router('products')">Products</a>
+                <a href="#about" onclick="router('about')">About Us</a>
+                <a href="#contact" onclick="router('contact')">Contact</a>
+            </div>
+            <div class="nav-actions">
+                <button id="admin-login-btn" onclick="toggleAdminModal()" class="btn-outline">Admin Login</button>
+                <button id="admin-dashboard-btn" onclick="router('admin')" class="btn-primary hidden">Dashboard</button>
+                <button id="admin-logout-btn" onclick="logout()" class="btn-outline hidden">Logout</button>
+            </div>
+            <div class="mobile-menu-btn" onclick="toggleMobileMenu()">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobile-menu">
+        <a href="#home" onclick="router('home'); toggleMobileMenu()">Home</a>
+        <a href="#products" onclick="router('products'); toggleMobileMenu()">Products</a>
+        <a href="#about" onclick="router('about'); toggleMobileMenu()">About Us</a>
+        <a href="#contact" onclick="router('contact'); toggleMobileMenu()">Contact</a>
+        <div id="mobile-admin-links">
+            <a href="#" onclick="toggleAdminModal(); toggleMobileMenu()">Admin Login</a>
+        </div>
+    </div>
+
+    <!-- Main Content Area -->
+    <main id="app">
+        <!-- Views will be injected here by JavaScript -->
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container footer-content">
+            <div class="footer-section">
+                <h3>Sriya Products</h3>
+                <p>Bringing the authentic taste of Sri Lankan spices to your kitchen since 1999.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <a href="#home" onclick="router('home')">Home</a>
+                <a href="#products" onclick="router('products')">Products</a>
+                <a href="#about" onclick="router('about')">About Us</a>
+            </div>
+            <div class="footer-section">
+                <h3>Contact</h3>
+                <p><i class="fas fa-phone"></i> +94 662 287 258</p>
+                <p><i class="fas fa-envelope"></i> info@sriyaproducts.lk</p>
+                <p><i class="fas fa-map-marker-alt"></i> Maussawa, Beligamuwa, Galewela, Sri Lanka.</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Sriya Products. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Admin Login Modal -->
+    <div id="login-modal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close-modal" onclick="toggleAdminModal()">&times;</span>
+            <h2>Admin Login</h2>
+            <form id="login-form" onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label>Username</label>
+                    <input type="text" id="username" required placeholder="admin">
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="password" required placeholder="admin123">
+                </div>
+                <button type="submit" class="btn-primary full-width">Login</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Product Modal (Add/Edit) -->
+    <div id="product-modal" class="modal hidden">
+        <div class="modal-content large-modal">
+            <span class="close-modal" onclick="closeProductModal()">&times;</span>
+            <h2 id="product-modal-title">Add Product</h2>
+            <form id="product-form" onsubmit="handleProductSubmit(event)">
+                <input type="hidden" id="product-id">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Product Name (English)</label>
+                        <input type="text" id="product-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Product Name (Sinhala - Optional)</label>
+                        <input type="text" id="product-name-sinhala" placeholder="Example: මිරිස් කුඩු">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Category</label>
+                    <select id="product-category">
+                        <option value="Spices">Spices</option>
+                        <option value="Flour">Flour</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Price (LKR)</label>
+                    <input type="number" id="product-price" required>
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea id="product-description" rows="4"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Image URL</label>
+                    <input type="text" id="product-image" placeholder="https://example.com/image.jpg">
+                    <small>For demo, use external URLs or place images in an 'images' folder.</small>
+                </div>
+                <button type="submit" class="btn-primary">Save Product</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="data.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
